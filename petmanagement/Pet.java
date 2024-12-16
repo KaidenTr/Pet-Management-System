@@ -83,7 +83,7 @@ public abstract class Pet implements Serializable {
                "Age: " + age + "\n" +
                "Breed: " + breed + "\n" +
                "Weight: " + weight + " kg\n" +
-               "Owner: " + ownerName + "\n";
+               "Owner: " + ownerName;
     }
 
     // Print details

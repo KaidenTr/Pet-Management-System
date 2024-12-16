@@ -1,0 +1,2 @@
+Dog,Buddy,3,Golden Retriever,30.0,John Doe,Loves to fetch
+Cat,Whiskers,2,Siamese,10.0,Jane Doe,Loves to climb
