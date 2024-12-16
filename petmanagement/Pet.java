@@ -105,5 +105,3 @@ public abstract class Pet implements Serializable {
         this.breed = breed; // Allows breed to be updated independently (T.H.)
     }
 }
-
-

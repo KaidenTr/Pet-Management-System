@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class PetManager {
     private List<Pet> pets = new ArrayList<>();
@@ -31,9 +32,10 @@ public class PetManager {
         for (Pet pet : pets) {
             if (pet.getName().equals(petName)) {
                 pet.getDetails();
-                break;
+                return;
             }
         }
+        System.out.println("No pet found with the name: " + petName);
     }
 
     public void getHealthRecord(String petName) {
@@ -60,48 +62,116 @@ public class PetManager {
         }
     }
 
+    public void getAllInformation() {
+        for (Pet pet : pets) {
+            String petName = pet.getName();
+            System.out.println("\nDetails for pet: " + petName);
+            getPetDetails(petName);
+            getHealthRecord(petName);
+            getFeedingSchedule(petName);
+            getAppointmentDetails(petName);
+        }
+    }
+
     public static void main(String[] args) {
         PetManager manager = new PetManager();
+        Scanner scanner = new Scanner(System.in);
+        boolean exit = false;
 
-        // pets
-        Dog dog = new Dog("Buddy", 3, "Golden Retriever", 30.0, "Owner Name 1", "Loves to slee[");
-        Cat cat = new Cat("Whiskers", 2, "Siamese", 10.0, "Owner Name 2", "Loves to climb");
+        while (!exit) {
+            System.out.println("\nPet Management System");
+            System.out.println("1. Add Pet");
+            System.out.println("2. Add Health Record");
+            System.out.println("3. Add Feeding Schedule");
+            System.out.println("4. Add Appointment");
+            System.out.println("5. View All Information");
+            System.out.println("6. Exit");
+            System.out.print("Choose an option: ");
 
-        manager.addPet(dog);
-        manager.addPet(cat);
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
 
-        //health records
-        HealthRecord dogHealthRecord = new HealthRecord("2024-11-21", "Vaccinated for rabies");
-        HealthRecord catHealthRecord = new HealthRecord("2024-11-22", "Vaccinated for feline distemper");
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter pet type (Dog/Cat): ");
+                    String type = scanner.nextLine();
+                    System.out.print("Enter name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter age: ");
+                    int age = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter breed: ");
+                    String breed = scanner.nextLine();
+                    System.out.print("Enter weight: ");
+                    double weight = scanner.nextDouble();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter owner name: ");
+                    String ownerName = scanner.nextLine();
+                    System.out.print("Enter breed-specific attribute: ");
+                    String attribute = scanner.nextLine();
 
-        manager.addHealthRecord(dog.getName(), dogHealthRecord);
-        manager.addHealthRecord(cat.getName(), catHealthRecord);
+                    if (type.equalsIgnoreCase("Dog")) {
+                        Dog dog = new Dog(name, age, breed, weight, ownerName, attribute);
+                        manager.addPet(dog);
+                    } else if (type.equalsIgnoreCase("Cat")) {
+                        Cat cat = new Cat(name, age, breed, weight, ownerName, attribute);
+                        manager.addPet(cat);
+                    } else {
+                        System.out.println("Invalid pet type.");
+                    }
+                    break;
 
-        //feeding schedules
-        FeedingSchedule dogFeedingSchedule = new FeedingSchedule("08:00 AM", "Dog Food");
-        FeedingSchedule catFeedingSchedule = new FeedingSchedule("09:00 AM", "Cat Food");
+                case 2:
+                    System.out.print("Enter pet name: ");
+                    String petName = scanner.nextLine();
+                    System.out.print("Enter vaccination date: ");
+                    String vaccinationDate = scanner.nextLine();
+                    System.out.print("Enter medical history: ");
+                    String medicalHistory = scanner.nextLine();
+                    System.out.print("Enter allergies: ");
+                    String allergies = scanner.nextLine();
 
-        manager.addFeedingSchedule(dog.getName(), dogFeedingSchedule);
-        manager.addFeedingSchedule(cat.getName(), catFeedingSchedule);
+                    HealthRecord healthRecord = new HealthRecord(vaccinationDate, medicalHistory, allergies);
+                    manager.addHealthRecord(petName, healthRecord);
+                    break;
 
-        //appointments
-        Appointment dogAppointment = new Appointment("2024-12-21", "Dr. Smith");
-        Appointment catAppointment = new Appointment("2024-12-22", "Dr. Brown");
+                case 3:
+                    System.out.print("Enter pet name: ");
+                    petName = scanner.nextLine();
+                    System.out.print("Enter feeding time: ");
+                    String feedingTime = scanner.nextLine();
+                    System.out.print("Enter food type: ");
+                    String foodType = scanner.nextLine();
 
-        manager.addAppointment(dog.getName(), dogAppointment);
-        manager.addAppointment(cat.getName(), catAppointment);
+                    FeedingSchedule feedingSchedule = new FeedingSchedule(feedingTime, foodType);
+                    manager.addFeedingSchedule(petName, feedingSchedule);
+                    break;
 
-        // Retrieving details
-        manager.getPetDetails("Buddy");
-        manager.getHealthRecord("Buddy");
-        manager.getFeedingSchedule("Buddy");
-        manager.getAppointmentDetails("Buddy");
+                case 4:
+                    System.out.print("Enter pet name: ");
+                    petName = scanner.nextLine();
+                    System.out.print("Enter appointment date: ");
+                    String appointmentDate = scanner.nextLine();
+                    System.out.print("Enter veterinarian name: ");
+                    String vetName = scanner.nextLine();
 
-        manager.getPetDetails("Whiskers");
-        manager.getHealthRecord("Whiskers");
-        manager.getFeedingSchedule("Whiskers");
-        manager.getAppointmentDetails("Whiskers");
+                    Appointment appointment = new Appointment(appointmentDate, vetName);
+                    manager.addAppointment(petName, appointment);
+                    break;
+
+                case 5:
+                    manager.getAllInformation();
+                    break;
+
+                case 6:
+                    exit = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+
+        scanner.close();
     }
 }
-
-
